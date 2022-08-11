@@ -46,7 +46,7 @@ class DonationManager:
             "donation_id": donation_id,
         }
         add(TransactionModel, data)
-        t = [x for x in TransactionModel.query.filter_by(donation_id=donation_id).all() if not x.send][0]
-        t.send = True
-        wise.fund_transfer(t.transfer_id)
+        transaction = [x for x in TransactionModel.query.filter_by(donation_id=donation_id).all() if not x.send][0]
+        transaction.send = True
+        wise.fund_transfer(transaction.transfer_id)
 
