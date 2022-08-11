@@ -19,5 +19,3 @@ class User(BaseUser):
     role = db.Column(db.Enum(UserRole), default=UserRole.user, nullable=False)
     donation_id = db.relationship("Donation", backref="donation", lazy='dynamic')
 
-
-''' create donation нова таблица където само админ може да създава в нея '''

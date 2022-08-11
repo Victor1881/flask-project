@@ -15,3 +15,12 @@ class CreateDonation(Resource):
         current_user = auth.current_user()
         donation = DonationManager.create_donation(data, current_user)
         return donation
+
+
+class Donate(Resource):
+    @auth.login_required
+    def post(self):
+        data = request.get_json()
+        current_user = auth.current_user()
+        message = DonationManager.donate(data, current_user)
+        return message
