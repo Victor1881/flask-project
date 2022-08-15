@@ -21,3 +21,5 @@ class Donate(db.Model):
     donation = db.relationship('Donation')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = db.relationship('User')
+    total = db.Column(db.Integer, default=0, nullable=False)
+    biggest_amount = db.Column(db.Integer, default=0, nullable=False)

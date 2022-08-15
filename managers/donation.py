@@ -1,11 +1,11 @@
 import uuid
 
-from werkzeug.exceptions import FailedDependency
+from werkzeug.exceptions import FailedDependency, BadRequest
 
 from db import db
 from models import Donation, Donate, TransactionModel
 from services.wise import WiseService
-from units.helper import add, valid_donation
+from units.helper import add, valid_donation, top_donators
 
 wise = WiseService()
 
@@ -47,6 +47,18 @@ class DonationManager:
         }
         add(TransactionModel, data)
         transaction = [x for x in TransactionModel.query.filter_by(donation_id=donation_id).all() if not x.send][0]
-        transaction.send = True
         wise.fund_transfer(transaction.transfer_id)
+        transaction.send = True
+
+    @staticmethod
+    def get_donators(data):
+        try:
+            valid_donation(data['donation_id'])
+            donators = top_donators(data)
+        except KeyError:
+            raise BadRequest('No donation id given')
+
+        return donators
+
+
 
