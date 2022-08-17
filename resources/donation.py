@@ -4,6 +4,7 @@ from flask_restful import Resource
 from managers.auth import auth
 from managers.donate import DonateManager
 from managers.donation import DonationManager
+from managers.users import UserManager
 from models import UserRole
 from schemas.donation import DonateSchemaRequest
 from units.decorators import permission_required, validate_schema
@@ -39,5 +40,12 @@ class Donate(Resource):
         data = request.get_json()
         donators = DonateManager.get_donators(data)
         return [x for x in donators]
+
+
+class Reward(Resource):
+    @auth.login_required
+    def put(self, id):
+        UserManager.reward(id)
+
 
 

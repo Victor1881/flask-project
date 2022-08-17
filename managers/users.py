@@ -1,18 +1,15 @@
 from werkzeug.exceptions import BadRequest
 from werkzeug.security import generate_password_hash, check_password_hash
-
-from db import db
 from managers.auth import AuthManager
 from models.user import User
+from units.helper import donator_reward, add
 
 
 class UserManager:
     @staticmethod
     def register(user_data):
         user_data['password'] = generate_password_hash(user_data['password'])
-        user = User(**user_data)
-        db.session.add(user)
-        db.session.commit()
+        user = add(User, user_data)
         return AuthManager.encode_token(user)
 
     @staticmethod
@@ -25,3 +22,12 @@ class UserManager:
             return AuthManager.encode_token(user)
 
         raise BadRequest('Wrong credentials!')
+
+    @staticmethod
+    def reward(id):
+        user = User.query.filter_by(id=id).first()
+        if not user:
+            raise BadRequest('No such user!')
+
+        donator_reward(user)
+
