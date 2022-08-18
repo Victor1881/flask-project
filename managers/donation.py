@@ -3,7 +3,7 @@ from werkzeug.exceptions import BadRequest
 from db import db
 from models import Donation
 from services.wise import WiseService
-from units.helper import valid_donation
+from units.helper.donate_helper import valid_donation
 
 wise = WiseService()
 

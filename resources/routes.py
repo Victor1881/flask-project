@@ -1,5 +1,5 @@
 from resources.auth import Register, LoginResource
-from resources.donation import CreateDonation, Donate, Reward
+from resources.donation import CreateDonation, Donate, Reward, DeleteUser
 
 routes = (
     (Register, "/register/"),
@@ -7,4 +7,5 @@ routes = (
     (CreateDonation, "/create/"),
     (Donate, "/donate/"),
     (Reward, "/user/<int:id>/reward/"),
+    (DeleteUser, "/user/<int:id>/delete/"),
 )

@@ -1,14 +1,6 @@
 from werkzeug.exceptions import BadRequest
 
-from db import db
-from models import Donation, Donate, User, DonatorsRewards
-
-
-def add(table_name, d):
-    data = table_name(**d)
-    db.session.add(data)
-    db.session.flush()
-    return data
+from models import Donation, Donate, User
 
 
 def valid_donation(id_d):
@@ -47,19 +39,3 @@ def top_donators(data):
             f'{user.first_name} {user.last_name} has donated total {x.total} with biggest donation {x.biggest_amount}')
 
     return newlist
-
-
-def donator_reward(user):
-    total = sum((d.amount for d in Donate.query.filter_by(user_id=user.id).all()))
-    if 50 < total <= 100:
-        user.donator_status = DonatorsRewards.normal
-    elif 100 < total <= 500:
-        user.donator_status = DonatorsRewards.super
-    elif 500 < total <= 1000:
-        user.donator_status = DonatorsRewards.elite
-    elif 1000 < total <= 2000:
-        user.donator_status = DonatorsRewards.vip
-    elif 2000 < total <= 5000:
-        user.donator_status = DonatorsRewards.legendary
-    elif total > 5000:
-        user.donator_status = DonatorsRewards.mythic

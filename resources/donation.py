@@ -45,7 +45,12 @@ class Donate(Resource):
 class Reward(Resource):
     @auth.login_required
     def put(self, id):
-        UserManager.reward(id)
+        message = UserManager.reward(id)
+        return message
 
 
+class DeleteUser(Resource):
+    @auth.login_required
+    def delete(self, id):
+        UserManager.delete_user(id)
 

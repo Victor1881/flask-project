@@ -4,7 +4,8 @@ from werkzeug.exceptions import FailedDependency, BadRequest
 
 from models import TransactionModel, Donate
 from services.wise import WiseService
-from units.helper import valid_donation, add, top_donators
+from units.helper.db import add
+from units.helper.donate_helper import valid_donation, top_donators
 
 wise = WiseService()
 
