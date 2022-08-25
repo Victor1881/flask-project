@@ -1,8 +1,7 @@
 from flask import request
 from flask_restful import Resource
-from db import db
+
 from managers.users import UserManager
-from models.user import User
 from schemas.request import RegisterSchemaRequest, LoginSchemaRequest
 from units.decorators import validate_schema
 

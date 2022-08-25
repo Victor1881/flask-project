@@ -17,12 +17,12 @@ def validate_schema(schema_name):
     return decorated_function
 
 
-def permission_required(role):
+def permission_required(*role):
     def decorated_function(func):
         def wrapper(*args, **kwargs):
             current_user = auth.current_user()
-            if not current_user.role == role:
-                raise Forbidden()
+            if current_user.donator_status not in role:
+                raise Forbidden("Permission denied")
             return func(*args, **kwargs)
         return wrapper
     return decorated_function

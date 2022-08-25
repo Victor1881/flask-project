@@ -1,23 +1,23 @@
 from flask import request
 from flask_restful import Resource
-
+from flask_api import status
 from managers.auth import auth
 from managers.donate import DonateManager
 from managers.donation import DonationManager
 from managers.users import UserManager
-from models import UserRole
+from models import DonatorsRewards
 from schemas.donation import DonateSchemaRequest
 from units.decorators import permission_required, validate_schema
 
 
 class CreateDonation(Resource):
     @auth.login_required
-    @permission_required(UserRole.user)
+    @permission_required(DonatorsRewards.vip, DonatorsRewards.legendary, DonatorsRewards.mythic)
     def post(self):
         data = request.get_json()
         current_user = auth.current_user()
         donation = DonationManager.create_donation(data, current_user)
-        return donation
+        return status.HTTP_201_CREATED
 
     @auth.login_required
     def get(self):
