@@ -15,3 +15,4 @@ class TransactionModel(db.Model):
     donation_id = db.Column(db.Integer, db.ForeignKey('donation.id'), nullable=False)
     send = db.Column(db.Boolean, default=False)
     donation = db.relationship('Donation')
+    pdf = db.Column(db.String, nullable=False)

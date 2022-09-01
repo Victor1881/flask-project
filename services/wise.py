@@ -1,7 +1,8 @@
-import json
 import uuid
 import requests
 from decouple import config
+
+from services.create_pdf import create_transaction_pdf
 
 
 class WiseService:
@@ -61,11 +62,24 @@ class WiseService:
         resp = requests.post(url, json=data, headers=self.headers)
         return resp.json()
 
+    def cancel_transfer(self, transfer_id):
+        url = f"{self.main_url}/v1/transfers/{transfer_id}/cancel"
+        resp = requests.put(url, headers=self.headers)
+        return resp.json()
+
+    @staticmethod
+    def get_pdf_transfer(transfer_id, user_email, amount):
+        a = create_transaction_pdf(amount, user_email, transfer_id)
+        return a
+
 
 if __name__ == '__main__':
     wise = WiseService()
-    quote_id = wise.create_quote("EUR", "EUR", 20)
-    recipient_id = wise.create_recipient("Quandle Dingle", "DE89370400440532013000")
-    customer_transaction = str(uuid.uuid4())
-    transfer_id = wise.create_transfer(recipient_id, quote_id, customer_transaction)["id"]
-    print(wise.fund_transfer(transfer_id))
+    # quote_id = wise.create_quote("EUR", "EUR", 20)
+    # recipient_id = wise.create_recipient("Quandle Dingle", "DE89370400440532013000")
+    # customer_transaction = str(uuid.uuid4())
+    # transfer_id = wise.create_transfer(recipient_id, quote_id, customer_transaction)["id"]
+    # wise.fund_transfer(transfer_id)
+    print(wise.get_pdf_transfer(51149613, 2000))
+
+
